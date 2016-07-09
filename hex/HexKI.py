@@ -26,6 +26,8 @@ class HexKI:
         self._movesReceived = 0
         self._movesCalculated = 0
         
+        self._myTurn = False
+        
         self.Size = Size(m,n)
         
         self.HexBoard = HexBoardKI(self.Size.m, self.Size.n)
@@ -55,7 +57,12 @@ class HexKI:
         self._movesReceived += 1
         
         # notify Model
-        self.HexBoard.receiveMove([move[0], move[1]])
+        if self._myTurn:
+            self.HexBoard.receiveMoveByPlayer([move[0], move[1]], "player")
+        else:
+            self.HexBoard.receiveMoveByPlayer([move[0], move[1]], "enemy")
+        self._myTurn = False
+        
         self._moveCounter = self._moveCounter + 1
         
         # finnaly it's possible to determine where we should play
@@ -83,6 +90,7 @@ class HexKI:
         
         self._movesCalculated += 1
         
+        self._myTurn = True
         
         # get the next move
         return self.calculateMove()

@@ -38,6 +38,9 @@ class Pattern:
         self.j = self.pattern.index("x") % self.n
         
         self.getMargins()
+        
+        #if self.pattern == "0???00?00Ex0E00000??":
+        #    print(self.topMargin, self.bottomMargin, self.rightMargin, self.leftMargin)
     
     def getMargins(self):
         

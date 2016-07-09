@@ -10,6 +10,9 @@ class HexModel:
         # keep track, increment on each added vertex
         self._groupCounter = 2
         
+        # my turn?=
+        self._myTurn = -1
+        
         # player
         self._player = 1
         
@@ -28,12 +31,16 @@ class HexModel:
     # vertex is clicked
     def isMarked(self, i, j):
         
-        state = self.getVertex(i, j).player
-        
-        if state == None:
+        if i >= self.size[0] or i < 0 or j >= self.size[1] or j < 0:
             return False
+        
         else:
-            return True
+            state = self.getVertex(i, j).player
+            
+            if state == None:
+                return False
+            else:
+                return True
     
     # get Vertex at certain index
     def getVertex(self, i, j):
@@ -140,7 +147,15 @@ class HexModel:
         vertex = self.getVertex(move[0], move[1])
         
         # mark it
-        vertex.player = self.getPlayer()
+        if self._myTurn == -1:
+            vertex.player = self.getPlayer()
+        else:
+            if self._myTurn == True:
+                vertex.player = self.getPlayer()
+                self._myTurn = False
+            else:
+                vertex.player = self.getEnemy()
+            
         
         # first add it to a new group (later on merge them)
         vertex.group = self._groupCounter

@@ -17,7 +17,7 @@ class MachineGUI:
         
         self._finished = False
         
-        self.targetIterations = 1000
+        self.targetIterations = 10
         self.q = 0 
         
         self.start()

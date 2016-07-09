@@ -91,7 +91,7 @@ class PatternMatcher:
             i = int(patternToSelect[3])
             j = int(patternToSelect[4])
             
-            #print("Pattern Used:", patternToSelect[5])
+            #print("Pattern Used:", patternToSelect[5], "@", i_shift, j_shift, "with", i, j)
             
             return [i_shift + i, j_shift + j]
         
@@ -165,10 +165,8 @@ class PatternMatcher:
                                                         
                             
                             patternIndex = i * pattern.n + j
-                            if player == 2:
-                                globalIndex = (i_shift + i) * self.Model.size[0] + j_shift + j
-                            else:
-                                globalIndex = (j_shift + j) * self.Model.size[0] + i_shift + i
+                            globalIndex = (i_shift + i) * self.Model.size[0] + j_shift + j
+                            #print(globalIndex)
                             
                             #print(pattern.pattern, patternIndex, i, j, pattern.n)
                             
@@ -185,9 +183,7 @@ class PatternMatcher:
                                         break
                                     
                                 elif len(self.GameState) > globalIndex and globalIndex >= 0:
-                                    
-                                    
-                                    
+                                                                        
                                     patternComp = str(translator[patternVal])
                                     gameComp = str(self.GameState[globalIndex])
                                     
@@ -204,7 +200,9 @@ class PatternMatcher:
                                     elif patternComp != gameComp:
                                         matching = False
                                         break
-                                
+                                else:
+                                    matching = False
+                                    break
                                 
                         
                     if matching == True and not self.Model.isMarked(i_shift + pattern.i, j_shift + pattern.j):

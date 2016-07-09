@@ -37,3 +37,16 @@
 # added
 - getBoard @Game like specified in paper
 - readBoard @HexBoard like specified (fucking job as i had to implement the union find afterwards)
+
+# ------------------------------
+# v1.3
+# ------------------------------
+
+# fixed
+- KI’s Hexboard Player Change 
+(didn’t change player so it couldn’t detect enemies on the board (that’s the cause for our thoughts of a wrong rotation))
+- minor bugfixes
+
+#todo
+- neat code comments
+
