@@ -1,3 +1,3 @@
 from Game import *
 
-Game = Game(11,11,"machine")
+Game = Game(11,11,"inter")

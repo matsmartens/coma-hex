@@ -1,4 +1,4 @@
-# ------------------------------
+﻿# ------------------------------
 # v1.0
 # ------------------------------
 
@@ -59,6 +59,15 @@
 
 in main.py you can specify "machine". then MachineGUI is called which processes multiple iterations of the game and store the results in output.txt
 you can then use the loadState to have a look into the logic of the game. The first value is the amount of moves per game
+
+# ------------------------------
+# v1.5
+# ------------------------------
+
+# added
+- victorypath(works really well, except for certain spezial situations...) to hexmodel
+-Hexagon got a new attribute(victorypath = 0)
+
 
 
 

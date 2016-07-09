@@ -27,8 +27,7 @@ class HexModel:
                 # add Hexagon instance to the dict
                 # with key => i;j
                 self.Vertices[str(i) + "," + str(j)] = Hexagon(i, j)
-    
-    # vertex is clicked
+
     def isMarked(self, i, j):
         
         if i >= self.size[0] or i < 0 or j >= self.size[1] or j < 0:
@@ -74,7 +73,87 @@ class HexModel:
     # get List of Vertices that belong to
     # victory path
     def getVictoryPath(self):
-        
+        if self.Game.currentPlayer() == 1:
+            z1 = self.size[0]//2
+            z2 = 0
+            counter = 1
+            while self.getVertex(z1,z2).player != self.Game.currentPlayer() and self.getVertex(z1,z2).player != None:
+                if counter%2 == 1:
+                    z1 += counter
+                    counter += 1
+                else:
+                    z1 -= counter
+                    counter += 1
+            self.getVertex(z1,z2).victorypath = self.Game.currentPlayer()
+            self.victory(z1,z2)
+            ausgabeliste = []
+            for i,vertex in self.Vertices.items():
+                if vertex.victorypath == self.Game.currentPlayer():
+                    ausgabeliste.append(vertex)
+        else:
+            z1 = 0
+            z2 = self.size[1]//2
+            counter = 1
+            while self.getVertex(z1,z2).player != self.Game.currentPlayer() and self.getVertex(z1,z2).player != None:
+                if counter%2 == 1:
+                    z2 += counter
+                    counter += 1
+                else:
+                    z2 -= counter
+                    counter += 1
+            self.getVertex(z1,z2).victorypath = self.Game.currentPlayer()
+            self.victory(z1,z2)
+            ausgabeliste = []
+            for i,vertex in self.Vertices.items():
+                if vertex.victorypath == self.Game.currentPlayer():
+                    ausgabeliste.append(vertex)
+        for i,vertex in self.Vertices.items():
+            if vertex.victorypath != 0:
+                vertex.victorypath = 0
+        return ausgabeliste
+			
+			
+    #hilfsfunktion für getvictorypath
+    def victory(self, i, j):
+        if self.Game.currentPlayer() == 1:
+            if j == self.size[1]-1:
+                return
+            else:
+                if self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None and self.getVertex(i,j+1).victorypath != -1:
+                    self.getVertex(i,j+1).victorypath = self.Game.currentPlayer()
+                    self.victory(i,j+1)
+                elif self.getVertex(i-1,j+1).player == self.Game.currentPlayer() or self.getVertex(i-1,j+1).player == None and self.getVertex(i-1,j+1).victorypath != -1:
+                    self.getVertex(i-1,j+1).victorypath = self.Game.currentPlayer()
+                    self.victory(i-1,j+1)
+                elif (self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i+1,j).victorypath != -1:
+                    self.getVertex(i+1,j).victorypath = self.Game.currentPlayer()
+                    self.victory(i+1,j)
+                elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i-1,j).victorypath != -1:
+                    self.getVertex(i-1,j).victorypath = self.Game.currentPlayer()
+                    self.victory(i-1,j)
+                else:
+                    self.getVertex(i,j).victorypath = -1
+                    self.victory(i,j)
+        else:
+            if i == self.size[0]-1:
+                return
+            else:
+                if self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None and self.getVertex(i+1,j).victorypath != -1:
+                    self.getVertex(i+1,j).victorypath = self.Game.currentPlayer()
+                    self.victory(i+1,j)
+                elif self.getVertex(i+1,j-1).player == self.Game.currentPlayer() or self.getVertex(i+1,j-1).player == None and self.getVertex(i+1,j-1).victorypath != -1:
+                    self.getVertex(i+1,j-1).victorypath = self.Game.currentPlayer()
+                    self.victory(i+1,j-1)
+                elif (self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None) and self.getVertex(i,j+1).victorypath != -1:
+                    self.getVertex(i,j+1).victorypath = self.Game.currentPlayer()
+                    self.victory(i,j+1)
+                elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1:
+                    self.getVertex(i,j-1).victorypath = self.Game.currentPlayer()
+                    self.victory(i,j-1)
+                else:
+                    self.getVertex(i,j).victorypath = -1  
+                    self.victory(i,j)			
+    # vertex is clicked        
         # FIXME return victory path
         return self.getVertices("unmarked")
     
