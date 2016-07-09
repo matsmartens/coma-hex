@@ -125,9 +125,7 @@ class HexModel:
                     
                     else:
                         # if player marked that vertex..
-                        if vertex.player == player:
-                            # .. add that vertex to the list
-                            Q.append(vertex)
+                        Q.append(vertex)
         
         return Q
     
@@ -194,7 +192,86 @@ class HexModel:
                     value.group = minGroup
             
     
-    
+    # read board
+    def readBoard(self, board, current = True):
+
+        groupCounter = 2
+        
+        # iterate over rows and cols
+        for i, row in enumerate(board):
+            
+            for j, col in enumerate(row):
+                
+                groupCounter += 1
+                
+                # convert to our way of undefined fields
+                group = None
+                
+                if col == 0:
+                    col = None
+                    
+                
+                else:
+                    if col == 1:
+                        
+                        if j == 0:
+                            group = 0
+                        elif j == self.size[1]-1:
+                            group = -1
+                        else:
+                            group = groupCounter
+                            
+                    
+                    else:
+                        if i == 0:
+                            group = 0
+                        elif i == self.size[0]-1:
+                            group = -1
+                        else:
+                            group = groupCounter
+                        
+                
+                # set the vertex' player 
+                vertex = self.getVertex(i, j)
+                vertex.player = col
+                vertex.group = group
+            
+        for i in range(self.size[0]):
+            for j in range(self.size[1]):
+                
+                v1 = []
+                v2 = []
+                
+                vertices = self.getSurroundingVertices(i, j,40)
+                for vertex in vertices:
+                    if vertex.player == 1 and vertex.group != None:
+                        v1.append(vertex)
+                    elif vertex.player == 2 and vertex.group != None:
+                        v2.append(vertex)
+                
+                v1 = [x.group for x in v1]
+                v2 = [x.group for x in v2]
+                
+                if len(v1) > 0:
+                    v1min = min(v1)
+                
+                if len(v2) > 0:
+                    v2min = min(v2)
+                
+                for i2 in range(self.size[0]):
+                    for j2 in range(self.size[1]):
+                        
+                        vertex = self.getVertex(i2, j2)
+                        if len(v1) > 0:
+                            if vertex.group in v1:
+                                vertex.group = v1min
+                        
+                        if len(v2) > 0:
+                            if vertex.group in v2:
+                                vertex.group = v2min
+                            
+                
+                
       
     # switch color of all vertices already marked
     def switchColors(self):

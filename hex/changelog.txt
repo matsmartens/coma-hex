@@ -29,3 +29,11 @@
 
 # deleted
 - SpashScreen and outdated functions, classes and files
+
+# ------------------------------
+# v1.2
+# ------------------------------
+
+# added
+- getBoard @Game like specified in paper
+- readBoard @HexBoard like specified (fucking job as i had to implement the union find afterwards)

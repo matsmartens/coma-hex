@@ -15,8 +15,6 @@ class Game:
         
         EventManager.subscribe("GameFinished", self.onGameFinished)
         EventManager.subscribe("GameStarted", self.onGameStarted)
-        EventManager.subscribe("MoveFinished", self.onMoveFinished)
-        EventManager.subscribe("GameUILoaded", self.onGameUILoaded)
         EventManager.subscribe("ToggleVictoryPath", self.onToggleVictoryPath)
         
         self._pause = False
@@ -67,25 +65,38 @@ class Game:
         
         
         
-    
+    # called every nth milliseconds / specified in HexGUI
     def onUITick(self):
+        
+        # do the KI Move if current player is KI
         self.doKIMove()
         
+    
+    # toggle visibility of current player's victory path
     def onToggleVictoryPath(self):
         
+        # but just if UI is really required
         if self.UIRequired():
+            
+            # get the vertices from the board
             vertices = self.HexBoard.getVictoryPath()
+            
+            # and pass them over to the GUI
             self.HexGUI._GUIGameBoard.Pattern.toggleVictoryPath(vertices)
-        
+    
+    # pause the KI movements 
     def pause(self):
         self._pause = not self._pause
-       
+    
+    # is the UI required (used for game anylsis "machine" mode)
     def UIRequired(self):
+        
         if self.mode == "human" or self.mode == "ki" or self.mode == "inter":
             return True
         else:
             return False
     
+    # start a new round
     def start(self, firstPlayer):
         
         self.GameState = 0
@@ -139,12 +150,22 @@ class Game:
             #self.HexGUI.openPage("menu")
             self.HexGUI.won(self.HexBoard.winner())
     
-    
-    
-    def onGameUILoaded(self):
-        pass
-        #if self.mode == "inter" or (self.mode == "ki" and self._currentPlayerType == "human"):
-        #    print("IM KI")
+    # get current state of the board
+    def getBoard(self):
+        
+        Vertices = []
+        
+        for i in range(self.size[0]):
+            VertexRow = []
+            for j in range(self.size[1]):
+                player = self.HexBoard.getVertex(i, j).player
+                if player == None:
+                    player = 0
+                VertexRow.append(player)
+            
+            Vertices.append(VertexRow)
+        
+        return Vertices
             
     
     # generate random player number
@@ -209,8 +230,7 @@ class Game:
             # notify View
             self.changePlayer()
             EventManager.notify("PlayerChanged")
-        
-            
+ 
         EventManager.notify("MoveFinished")
     
     
@@ -225,9 +245,5 @@ class Game:
             elif self.mode == "inter" or self.mode == "machine":
                 move = self.KI[self.currentPlayer()-1].nextMove()
                 self.makeMove(move)
-            
-    def onMoveFinished(self):
-        pass
-        
         
         

@@ -17,7 +17,7 @@ class MachineGUI:
         
         self._finished = False
         
-        self.targetIterations = 20
+        self.targetIterations = 1000
         self.q = 0 
         
         self.start()
@@ -62,8 +62,8 @@ class MachineGUI:
                 
                 #print(self.KI[player].PatternMatcher.mapGameState())
             
-            if q < 50:
-                Q.append(q)
+            Q.append([q, self.KI[0].PatternMatcher.mapGameState()])
+            
             self.IterationCounter = self.IterationCounter + 1
             
             
@@ -84,9 +84,9 @@ class MachineGUI:
             
         print("FINISHED")
         
-        f = open('output.txt', 'r+')
-        f.write("Move Count: Average:" + str(round(sum(Q) / len(Q))) + ", Min:", str(min(Q)) + ", Max:" + str(max(Q)) + str(Q))
-        
+        f = open('output.txt', 'w+')
+        for q in Q:
+            f.write((str(q[0]) + "," + str(q[1]) + "\n"))
         
         print(collections.Counter(self.WonVertices))
 

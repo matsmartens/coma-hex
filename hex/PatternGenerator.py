@@ -16,8 +16,6 @@ input = """ P x
 input = "".join(input.replace("\n",",").split())
 
 index = int("".join(input.split()).index("x"))
-print(index)
-
 
 i = index // len(input.replace(" ", "").split("\n")[0])
 j = index % len(input.replace(" ", "").split("\n")[0])

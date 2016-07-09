@@ -42,6 +42,7 @@ class GameView:
         self.draw()
     
     def togglePause(self):
+        
         self.Game.pause()
         
     def returnToMenu(self):
