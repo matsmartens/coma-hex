@@ -1,0 +1,31 @@
+# ------------------------------
+# v1.0
+# ------------------------------
+
+# added
+- Toggle Victory Path Button (get list of vertex objects from HexModel -> getVictoryPath())
+
+# fixed
+- support of asymmetric boards
+- rotation error of patterns
+- new protocol for patterns (unnecessary information deleted; x included in pattern)
+
+# todo
+- asymmetric board implementation (Daniel)
+- Victory Path logic (Jannis)
+- MCTS Database inclusion (Mats)
+
+# ------------------------------
+# v1.1
+# ------------------------------
+
+# added
+- Pause Button
+- Game stops in GameView when finished
+
+# updated
+- currentPlayer() sometimes returned the wrong player / indexing refurbished
+- ToPattern renamed to PatternGenerator
+
+# deleted
+- SpashScreen and outdated functions, classes and files
