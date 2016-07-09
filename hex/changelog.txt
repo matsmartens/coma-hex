@@ -50,3 +50,15 @@
 #todo
 - neat code comments
 
+# ------------------------------
+# v1.4
+# ------------------------------
+
+# added
+- loadState @ Game.py (you can specify a state to load there and watch what happened)
+
+in main.py you can specify "machine". then MachineGUI is called which processes multiple iterations of the game and store the results in output.txt
+you can then use the loadState to have a look into the logic of the game. The first value is the amount of moves per game
+
+
+

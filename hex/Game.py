@@ -83,6 +83,7 @@ class Game:
             
             # and pass them over to the GUI
             self.HexGUI._GUIGameBoard.Pattern.toggleVictoryPath(vertices)
+            self.HexGUI.draw()
     
     # pause the KI movements 
     def pause(self):
@@ -149,6 +150,12 @@ class Game:
             # move over to main menu and present the winner
             #self.HexGUI.openPage("menu")
             self.HexGUI.won(self.HexBoard.winner())
+    
+    def loadState(self):
+        
+        state = [[0, 1, 0, 0, 1, 0, 0, 2, 2, 2, 2], [0, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0], [0, 1, 1, 1, 0, 0, 2, 2, 2, 2, 2], [1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2], [1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 0], [0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2], [0, 0, 1, 1, 1, 0, 2, 2, 2, 2, 2], [1, 0, 2, 1, 1, 0, 0, 0, 2, 1, 1], [0, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0], [2, 2, 2, 2, 0, 0, 0, 1, 1, 1, 0], [2, 0, 0, 2, 2, 2, 1, 0, 0, 1, 1]]
+        
+        self.HexBoard.readBoard(state)
     
     # get current state of the board
     def getBoard(self):

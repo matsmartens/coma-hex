@@ -25,6 +25,8 @@ class GameView:
         
         self.ReturnToMenuButton = Button(master, text="Back to Menu", command=self.returnToMenu)
         
+        self.LoadStateButton = Button(master, text="Load State", command=self.loadState)
+        
         self.PlayerSwapButton = Button(master,
                              text="Swap Player",
                              command=self.swapPlayer)
@@ -40,6 +42,9 @@ class GameView:
         
         # Initial Drawing
         self.draw()
+    
+    def loadState(self):
+        self.Game.loadState()
     
     def togglePause(self):
         
@@ -70,6 +75,7 @@ class GameView:
         self.ShowVictoryPathButton.pack(side=LEFT)
         self.ReturnToMenuButton.pack(side=LEFT)
         self.PauseButton.pack(side=LEFT)
+        self.LoadStateButton.pack(side=LEFT)
         
     def hide(self):
         self.canvas.pack_forget()
@@ -78,6 +84,7 @@ class GameView:
         self.WinnerLabel.pack_forget()
         self.ShowVictoryPathButton.pack_forget()
         self.PauseButton.pack_forget()
+        self.LoadStateButton.pack_forget()
     
     def onMouseOver(self, event):
         self.Pattern.onMouseOver(event)

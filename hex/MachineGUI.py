@@ -17,7 +17,7 @@ class MachineGUI:
         
         self._finished = False
         
-        self.targetIterations = 10
+        self.targetIterations = 5
         self.q = 0 
         
         self.start()
@@ -61,8 +61,7 @@ class MachineGUI:
                 self.Game.makeMove(move)
                 
                 #print(self.KI[player].PatternMatcher.mapGameState())
-            
-            Q.append([q, self.KI[0].PatternMatcher.mapGameState()])
+            Q.append([q, self.KI[0].getBoard()])
             
             self.IterationCounter = self.IterationCounter + 1
             
@@ -82,13 +81,27 @@ class MachineGUI:
             self._finished = False
             self.start()
             
-        print("FINISHED")
+        print("Iterations finished")
+        print("Start writing output files")
+        
+        Q = sorted(Q, key=lambda x:x[0])
         
         f = open('output.txt', 'w+')
+        
+        f.write("Most used vertices: \n")
+        
+        f.write(str(collections.Counter(self.WonVertices)) + "\n\n")
+        
+        f.write("moves per game // game state to be loaded @ Game->loadState()\n")
+        
         for q in Q:
             f.write((str(q[0]) + "," + str(q[1]) + "\n"))
         
-        print(collections.Counter(self.WonVertices))
+        
+        
+        print("Output files written")
+        print("Terminated")
+        print("------------------")
 
     def onGameFinished(self):
         #print("Spieler", self.Game.HexBoard.winner(), "hat gewonnen!")

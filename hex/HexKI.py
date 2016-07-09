@@ -77,8 +77,6 @@ class HexKI:
             self.HexBoard.setPlayer(self._player)
             self.PatternMatcher = PatternMatcher(self.HexBoard, self)
             
-            
-            print("The player is", self._player)
         
         if sum(self.modeCounter) > 0:
             pass#print(round((self.modeCounter[0] * 100 / sum(self.modeCounter))),round((self.modeCounter[1] * 100 / sum(self.modeCounter))),round((self.modeCounter[2] * 100 / sum(self.modeCounter))))
@@ -155,7 +153,22 @@ class HexKI:
     def readBoard(self):
         pass
 
-
+    # get current state of the board
+    def getBoard(self):
+        
+        Vertices = []
+        
+        for i in range(self.Size.m):
+            VertexRow = []
+            for j in range(self.Size.n):
+                player = self.HexBoard.getVertex(i, j).player
+                if player == None:
+                    player = 0
+                VertexRow.append(player)
+            
+            Vertices.append(VertexRow)
+        
+        return Vertices
 
 
 
