@@ -9,6 +9,7 @@ class GameView:
         self.canvas_width = GUI.screenSize[0]
         self.canvas_height = GUI.screenSize[1]
         
+        self.GUI = GUI
         self.Game = game
         
         # Iniitate Canvas object and pack
@@ -18,19 +19,38 @@ class GameView:
         self.canvas.bind("<Leave>", self.onMouseLeft)
         self.canvas.bind("<Button>", self.onClick)
         
+        self.WinnerLabelText = StringVar()
+        self.WinnerLabel = Label(master, textvariable=self.WinnerLabelText)
+        
+        
+        self.ReturnToMenuButton = Button(master, text="Back to Menu", command=self.returnToMenu)
+        
         self.PlayerSwapButton = Button(master,
-                             text="swap Player",
+                             text="Swap Player",
                              command=self.swapPlayer)
         
         self.ShowVictoryPathButton = Button(master,
-                             text="toggle victory path",
+                             text="Toggle Victory Path",
                              command=self.toggleVictoryPath)
+        
+        self.PauseButton = Button(master, text="Pause", command=self.togglePause)
         
         # Create Hexgame Interface
         self.Pattern = HexagonPattern(self)
         
         # Initial Drawing
         self.draw()
+    
+    def togglePause(self):
+        self.Game.pause()
+        
+    def returnToMenu(self):
+        self.GUI.openPage("menu")
+        
+    def won(self, player):
+        self.WinnerLabel.pack(side=LEFT)
+        self.WinnerLabelText.set("Player " + str(player) + " won!")
+        self.Pattern.won()
     
     def swapPlayer(self):
         self.Game.changePlayer()
@@ -39,19 +59,24 @@ class GameView:
         self.draw()
     
     def showPlayerSwap(self):
-        self.PlayerSwapButton.pack()
+        self.PlayerSwapButton.pack(side=LEFT)
     
     def hidePlayerSwap(self):
         self.PlayerSwapButton.pack_forget()
     
     def show(self):
         self.canvas.pack()
-        self.ShowVictoryPathButton.pack()
+        self.ShowVictoryPathButton.pack(side=LEFT)
+        self.ReturnToMenuButton.pack(side=LEFT)
+        self.PauseButton.pack(side=LEFT)
         
     def hide(self):
         self.canvas.pack_forget()
         self.hidePlayerSwap()
+        self.ReturnToMenuButton.pack_forget()
+        self.WinnerLabel.pack_forget()
         self.ShowVictoryPathButton.pack_forget()
+        self.PauseButton.pack_forget()
     
     def onMouseOver(self, event):
         self.Pattern.onMouseOver(event)
@@ -63,9 +88,6 @@ class GameView:
         if self.Game.isPlayerHuman():
             move = self.Pattern.mapCoordToCell([event.x, event.y])
             self.Game.makeMove(move)
-        
-        if not self.Game.isPlayerHuman():
-            self.Game.pause()
     
     def toggleVictoryPath(self):
         EventManager.notify("ToggleVictoryPath")

@@ -18,11 +18,11 @@ class MenuView:
         
         self.Player1 = Button(frame,
                              text="Player 1 and start",
-                             command=lambda: self.startGame(2))
+                             command=lambda: self.startGame(1))
         
         self.Player2 = Button(frame,
                              text="Player 2 and start",
-                             command=lambda: self.startGame(1))
+                             command=lambda: self.startGame(2))
         
         self.Player0 = Button(frame,
                              text="Random Player and start",

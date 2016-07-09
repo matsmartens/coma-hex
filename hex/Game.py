@@ -53,10 +53,6 @@ class Game:
             
             self._currentPlayerType = "ki"
         
-        # set the game to entry point
-        #self.start(self._currentPlayer)
-        
-        
         
         if self.UIRequired():
             
@@ -106,6 +102,11 @@ class Game:
         # current player depending on decision
         self._currentPlayer = firstPlayer
         
+        # if random number wanted, generate one
+        if firstPlayer == 0:
+            self.chooseFirst()
+        
+        
         if self.mode == "ki":
             self.KI = HexKI(self.size[0], self.size[1])
         
@@ -116,10 +117,6 @@ class Game:
             self.KI.append(HexKI(self.size[0], self.size[1]))
             
             self._currentPlayerType = "ki"
-        
-        # if random number wanted, generate one
-        if firstPlayer == 0:
-            self.chooseFirst()
         
         EventManager.notify("GameStarted")
     
@@ -139,7 +136,7 @@ class Game:
         
         if self.UIRequired():
             # move over to main menu and present the winner
-            self.HexGUI.openPage("menu")
+            #self.HexGUI.openPage("menu")
             self.HexGUI.won(self.HexBoard.winner())
     
     
@@ -185,6 +182,8 @@ class Game:
     
     # control flow for click event
     def makeMove(self, move):
+        
+        
                 
         # Notify 
         EventManager.notify("MoveBegan")
@@ -210,8 +209,7 @@ class Game:
             # notify View
             self.changePlayer()
             EventManager.notify("PlayerChanged")
-            
-            
+        
             
         EventManager.notify("MoveFinished")
     
@@ -226,8 +224,6 @@ class Game:
     
             elif self.mode == "inter" or self.mode == "machine":
                 move = self.KI[self.currentPlayer()-1].nextMove()
-                #print(move, self.currentPlayer())
-                #print("making", move)
                 self.makeMove(move)
             
     def onMoveFinished(self):

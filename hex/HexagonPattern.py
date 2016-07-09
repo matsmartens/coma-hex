@@ -14,10 +14,14 @@ class HexagonPattern():
         
         self.blue = "#71b6f0"
         self.blueVictory = "#4089c7"
+        self.blueFinished = "#2b3b48"
         self.red = "#d34f4f"
         self.redVictory = "#ad2d2d"
+        self.redFinished = "#5c2424"
         
         self._victoryVertices = []
+        
+        self._finished = False
         
         # Sample Hexagon with length of 1
         self.points = [0.866025, 0,
@@ -73,7 +77,10 @@ class HexagonPattern():
         
         self.draw()
               
-    
+    def won(self):
+        
+        self._finished = True
+        self.draw()
     
     # That cell that's the user hovering above
     ActiveCell = [-1,-1]
@@ -210,18 +217,24 @@ class HexagonPattern():
                 # marked hexagons
                 vertex = self.HexGUI.Game.HexBoard.getVertex(i, j)
                 if vertex.player != None:
-                    if vertex.player == 1:
-                        fillColor= self.blue
-                    
                     if vertex.player == 2:
-                        fillColor= self.red
+                        if self._finished:
+                            fillColor = self.blue
+                        else:
+                            fillColor= self.blue
+                    
+                    if vertex.player == 1:
+                        if self._finished:
+                            fillColor = self.red
+                        else:
+                            fillColor= self.red
                 
                 else:
                        
                     # if cell has to be highlighted apply different color
                     if self.ActiveCell[0] == i and self.ActiveCell[1] == j:
                         if self.ActiveCell[0] != -1 and self.HexGUI.Game.HexBoard.isMarked(i, j) == False:
-                            if self.HexGUI.Game.currentPlayer() == 2:
+                            if self.HexGUI.Game.currentPlayer() == 1:
                                 fillColor = self.red
                             else:
                                 fillColor = self.blue

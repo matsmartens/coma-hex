@@ -1,6 +1,5 @@
 from tkinter import *
 
-from SplashScreenView import SplashScreenView
 from MenuView import MenuView
 from GameView import GameView
 from EventManager import EventManager
@@ -17,9 +16,9 @@ class HexGUI:
         
         # init Tkinter
         self.tkInstance = Tk()
+        self.tkInstance.title("HexGame by Daniel, Jannis and Mats")
         self.tkInstance.after(1000, self.onUITick)
         
-        self._GUISplashScreen = SplashScreenView(self.tkInstance, self)
         self._GUIMenu = MenuView(self.tkInstance, self)
         self._GUIGameBoard = GameView(self.tkInstance, self, Game)
         
@@ -49,7 +48,8 @@ class HexGUI:
         return 0
     
     def won(self, winner):
-        self._GUIMenu.won(winner)
+        #self._GUIMenu.won(winner)
+        self._GUIGameBoard.won(winner)
     
     def onMoveFinished(self):
         
@@ -64,24 +64,17 @@ class HexGUI:
         self.draw()
     
     def draw(self):
-        self._GUISplashScreen.draw()
         self._GUIMenu.draw()
         self._GUIGameBoard.draw()
     
     def openPage(self, page):
         
-        if page == "splash":
-            self._GUIMenu.hide()
-            self._GUIGameBoard.hide()
-            self._GUISplashScreen.show()
-        elif page == "menu":
+        if page == "menu":
             self._GUIMenu.show()
             self._GUIGameBoard.hide()
-            self._GUISplashScreen.hide()
         elif page == "game":
             self._GUIMenu.hide()
             self._GUIGameBoard.show()
-            self._GUISplashScreen.hide()
             EventManager.notify("GameUILoaded")
     
     

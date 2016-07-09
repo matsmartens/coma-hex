@@ -76,12 +76,7 @@ class HexModel:
     # return last player
     def winner(self):
         
-        #self.Game.changePlayer()
-        
         return self.getPlayer()
-        #if self.finished() ==  True:
-        #    print(self.Game.currentPlayer())
-        #    self.Game.currentPlayer()
     
     # get all surrounding vertices
     # that are marked by the same player
@@ -139,8 +134,7 @@ class HexModel:
     
     lastMove = None
     def receiveMove(self, move):
-        
-        
+                
         # first store the last move
         self.lastMove = move
         
@@ -161,7 +155,7 @@ class HexModel:
         # red: left 0, right -1
         # blue: top 0, right -1
         
-        if self.getPlayer() == 1:
+        if self.getPlayer() == 2:
             if move[0] == 0:
                 vertex.group = 0
             if move[0] == self.size[0]-1:
