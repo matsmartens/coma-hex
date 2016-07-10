@@ -82,7 +82,8 @@ class HexBoard:
     def finished(self):
         return self._finished
     
-    # get List of Vertices that belong to victory path
+    # get List of Vertices that belong to
+    # victory path
     def getVictoryPath(self):
         if self.Game.currentPlayer() == 1:
             z1 = self.size[0]//2
@@ -122,8 +123,8 @@ class HexBoard:
             if vertex.victorypath != 0:
                 vertex.victorypath = 0
         return ausgabeliste
-            
-            
+			
+			
     #hilfsfunktion für getvictorypath
     def victory(self, i, j):
         if self.Game.currentPlayer() == 1:
@@ -142,6 +143,12 @@ class HexBoard:
                 elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i-1,j).victorypath != -1:
                     self.getVertex(i-1,j).victorypath = self.Game.currentPlayer()
                     self.victory(i-1,j)
+                elif (self.getVertex(i-1,j-1).player == self.Game.currentPlayer() or self.getVertex(i-1,j-1).player == None) and self.getVertex(i-1,j-1).victorypath != -1:
+                    self.getVertex(i-1,j-1).victorypath = self.Game.currentPlayer()
+                    self.victory(i-1,j-1)
+                elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1:
+                    self.getVertex(i,j-1).victorypath = -1
+                    self.victory(i,j-1)
                 else:
                     self.getVertex(i,j).victorypath = -1
                     self.victory(i,j)
@@ -163,11 +170,8 @@ class HexBoard:
                     self.victory(i,j-1)
                 else:
                     self.getVertex(i,j).victorypath = -1  
-                    self.victory(i,j)            
-    # vertex is clicked        
-        # FIXME return victory path
-        return self.getVertices("unmarked")
-    
+                    self.victory(i,j)	          
+   
     
     # in case of a won game return last player
     def winner(self):

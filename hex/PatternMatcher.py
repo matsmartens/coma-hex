@@ -105,7 +105,7 @@ class PatternMatcher:
             j = int(patternToSelect[1][3])
             
             #if i_shift + i >= self.KI.Size.m or j_shift + j >= self.KI.Size.n:
-            print("Pattern Used:", patternToSelect[1][4], "@", i_shift, j_shift, "with", i, j)
+            #print("Pattern Used:", patternToSelect[1][4], "@", i_shift, j_shift, "with", i, j)
             
             return [i_shift + i, j_shift + j]
         
