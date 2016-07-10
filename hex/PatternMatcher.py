@@ -104,8 +104,8 @@ class PatternMatcher:
             i = int(patternToSelect[1][2])
             j = int(patternToSelect[1][3])
             
-            #if i_shift + i >= self.KI.Size.m or j_shift + j >= self.KI.Size.n:
-            print("Pattern Used:", patternToSelect[1][4], "@", i_shift, j_shift, "with", i, j)
+            if i_shift + i >= self.KI.Size.m or j_shift + j >= self.KI.Size.n:
+                print("Pattern Used:", patternToSelect[1][4], "@", i_shift, j_shift, "with", i, j, self.mapGameState())
             
             return [i_shift + i, j_shift + j]
         
@@ -250,8 +250,8 @@ class PatternMatcher:
                         
                     if matching == True and not self.Model.isMarked(i_shift + pattern.i, j_shift + pattern.j):
                         
-                        #if i_shift + pattern.i < 
-                        PatternsFound.append([pattern.weight, i_shift, j_shift, pattern.i, pattern.j, pattern.pattern])
+                        if not ((i_shift + pattern.i >= (self.KI.Size.m) or i_shift + pattern.i < 0 or j_shift + pattern.j >= (self.KI.Size.n) or j_shift + pattern.j < 0)):
+                            PatternsFound.append([pattern.weight, i_shift, j_shift, pattern.i, pattern.j, pattern.pattern])
         
         return PatternsFound
     

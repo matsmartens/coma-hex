@@ -1,5 +1,6 @@
 from EventManager import EventManager
 from Hexagon import *
+from math import floor
 
 class HexBoard:
     
@@ -274,8 +275,9 @@ class HexBoard:
             # WIN Condition
             # either within the gameboard
             # or the last vertex marked has been at the borders
+            finished = False
             if (-1 in groups and 0 in groups):
-                self.onGameFinished()
+                finished = True
                 
             # get the minimum group
             minGroup = min(groups)
@@ -285,6 +287,73 @@ class HexBoard:
                 if value.group in groups:
                     value.group = minGroup
             
+            if finished:
+                self.onGameFinished()
+    
+    # return a height x width snapshot centered at i, j
+    def getWinnerSnapshotBinary(self, height = 5, width = 5):
+        
+        player = self.winner()
+        
+        
+        
+        WinningPatterns = []
+        
+        # look for winning vertices
+        for key, vertex in self.Vertices.items():
+            if vertex.group == -1 and vertex.i - 3 > 0 and vertex.i + 3 < 11 and vertex.j - 3 > 0 and vertex.j + 3 < 11:
+                
+                VerticesA = []
+                VerticesB = []
+                
+                for i in range(-floor(height/2), floor(height/2)):
+                    
+                    VertexRowA = []
+                    VertexRowB = []
+                    for j in range(-floor(width/2), floor(width/2)):
+                        
+                        if self.isValidCoordinate(i+vertex.i, j+vertex.j):
+                            
+                            v = self.getVertex(i+vertex.i, j+vertex.j)
+                            if v.player == player:
+                                VertexRowA.append(1)
+                                VertexRowB.append(0)
+                            elif v.player != None and v.player != player:
+                                VertexRowA.append(0)
+                                VertexRowB.append(1)
+                            else:
+                                VertexRowA.append(0)
+                                VertexRowB.append(1)
+                    
+                    VerticesA.extend(VertexRowA)
+                    VerticesB.extend(VertexRowB)
+                
+                VerticesA.extend(VerticesB)
+                
+                mask = 0b0
+                
+                for element in VerticesA:
+                    if element == 1:
+                        mask = (mask << 1) + 0b1
+                    else:
+                        mask = (mask << 1) + 0b0
+                
+                WinningPatterns.append(mask)
+        
+        return WinningPatterns
+                                
+                        
+                
+        
+                
+                
+    def isValidCoordinate(self, i, j):
+        
+        if i < self.size[0] and i > 0 and j < self.size[1] and j > 0:
+            return True
+        else:
+            return False
+          
     
     # read board
     def readBoard(self, board, current = True):

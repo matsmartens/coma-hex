@@ -18,7 +18,7 @@ class MachineGUI:
         
         self._finished = False
         
-        self.targetIterations = 200
+        self.targetIterations = 20
         self.q = 0 
         
         self.start()
@@ -45,6 +45,7 @@ class MachineGUI:
         player = 1
         Q = []
         Winners = []
+        Patterns = []
         while self.IterationCounter < self.targetIterations:
             
             q= 0
@@ -73,6 +74,13 @@ class MachineGUI:
             
             self.IterationCounter = self.IterationCounter + 1
             
+            # get snapshot if useful
+            if self.Game.HexBoard.winner() == 1 and q < 100:
+                print("Attractive Pattern found")
+                ptns = self.Game.HexBoard.getWinnerSnapshotBinary()
+                Patterns.extend(ptns)
+            
+            
             
             
             for key, value in self.Game.HexBoard.Vertices.items():
@@ -99,6 +107,12 @@ class MachineGUI:
         f.write("Most used vertices: \n")
         
         f.write(str(collections.Counter(self.WonVertices)) + "\n\n")
+        
+        f.write("Dynamic Patterns: \n")
+        
+        f.write(str(collections.Counter(Patterns)) + "\n\n")
+        
+        
         
         f.write("Win statistics:\n\n")
         
