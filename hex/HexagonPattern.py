@@ -1,4 +1,5 @@
 from tkinter import *
+from Size import Size
 
 # TODO
 # - Subscripts der anderen Klassen benachrichtigen
@@ -9,8 +10,7 @@ class HexagonPattern():
     def __init__(self, HexGUI):
         
         #n=x,m=y
-        self.n = HexGUI.Game.size[1]
-        self.m= HexGUI.Game.size[0]
+        self.Size = HexGUI.Game.Size
         
         self.blue = "#71b6f0"
         self.blueVictory = "#4089c7"
@@ -56,12 +56,13 @@ class HexagonPattern():
         # For design reasons set a margin
         # otherwise it's eye cancer
         self.margin = 40
-        self.vergleich=self.n/self.m
+        
+        self.vergleich=self.Size.n/self.Size.m
         if self.vergleich>=2:
-            self.q=self.n + (self.n - 1)/2
+            self.q=self.Size.n + (self.Size.n - 1)/2
             self.scale=(self.HexGUI.canvas_width - 2 * self.margin*self.vergleich) / (self.q*1.7320508)
         else:
-            self.q=self.m + (self.m - 1)/2
+            self.q=self.Size.m + (self.Size.m - 1)/2
             self.scale=(self.HexGUI.canvas_width - 2 * self.margin*self.vergleich) / (self.q*1.7320508)
             
         self.spielbrett=[[0,1,0],[2,0,0],[0,0,0]]
@@ -94,7 +95,7 @@ class HexagonPattern():
             # Determine where the User is pointing at
             Cell = self.mapCoordToCell([event.x,event.y])
             # If Cell is within a ceratin range .. 
-            if Cell[0] >= 0 and Cell[0] <= self.m and Cell[1] >= 0 and Cell[1] <= self.n:
+            if Cell[0] >= 0 and Cell[0] <= self.Size.m and Cell[1] >= 0 and Cell[1] <= self.Size.n:
                 
                 # .. and the cell is different from the current highlighted
                 if Cell != self.ActiveCell:
@@ -135,7 +136,7 @@ class HexagonPattern():
     def drawMarkings(self):
         L = []
         R = []
-        for q in range(self.n):
+        for q in range(self.Size.n):
             for vertex in self.topMark:
                 x = vertex[0] * self.scale + self.margin + (q * self.scale * 1.7320508)
                 y = vertex[1] * self.scale + self.margin - 2
@@ -143,8 +144,8 @@ class HexagonPattern():
                 L.append([x, y])
             
             for vertex in self.bottomMark:
-                x = vertex[0] * self.scale + self.margin + (q * self.scale * 1.7320508) + (0.5 * self.m * 1.7320508 * self.scale) - (0.5 * self.scale * 1.7320508)
-                y = vertex[1] * self.scale + self.margin + self.m * 1.5 * self.scale + 2
+                x = vertex[0] * self.scale + self.margin + (q * self.scale * 1.7320508) + (0.5 * self.Size.m * 1.7320508 * self.scale) - (0.5 * self.scale * 1.7320508)
+                y = vertex[1] * self.scale + self.margin + self.Size.m * 1.5 * self.scale + 2
                 
                 
                 R.append([x, y])
@@ -152,9 +153,9 @@ class HexagonPattern():
         R1 = []
         L1 = []
         
-        for q in range(self.m):
+        for q in range(self.Size.m):
             for vertex in self.sideMark:
-                x = vertex[0] * self.scale + self.margin + (self.n * self.scale * 1.7320508) - (0.5 * 1.7320508 * self.scale) + 2 + (q * self.scale * 1.7320508 * 0.5)
+                x = vertex[0] * self.scale + self.margin + (self.Size.n * self.scale * 1.7320508) - (0.5 * 1.7320508 * self.scale) + 2 + (q * self.scale * 1.7320508 * 0.5)
                 y = vertex[1] * self.scale + self.margin + (q * 1.5 * self.scale)
                 
                 v = ((vertex[0] * (-1)) + 0.866025) * self.scale + self.margin - 2 + (q * self.scale * 1.7320508 * 0.5)
@@ -201,9 +202,9 @@ class HexagonPattern():
         
         # main loop to draw the hexagon pattern
         # vertical loop
-        for i in range(self.m):
+        for i in range(self.Size.m):
             # horizontal loop
-            for j in range(self.n):
+            for j in range(self.Size.n):
                 
                 # get coords (inverse function used to get back i's and j's in map function)
                 x = round((1.7320508 * j + 0.866025 * i) * self.scale) + self.margin;

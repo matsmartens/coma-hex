@@ -7,7 +7,9 @@ class Pattern:
         
         self.pattern = "".join(pattern.split(","))
         
-        self.weight = weight
+        self.weight = [[float(q) for q in x.split("-")] for x in weight.split(",")]
+        self.weight = sorted(self.weight, key=lambda x:x[0])
+        
         
         if reverse:
             
@@ -39,7 +41,7 @@ class Pattern:
         
         self.getMargins()
         
-        #if self.pattern == "0???00?00Ex0E00000??":
+        #if self.pattern == "00x0??00?0E0?00?0E0?":
         #    print(self.topMargin, self.bottomMargin, self.rightMargin, self.leftMargin)
     
     def getMargins(self):

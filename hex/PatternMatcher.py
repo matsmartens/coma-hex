@@ -19,56 +19,56 @@ class PatternMatcher:
         self.Patterns = {}
         
         # 2 Bridge oben links
-        self.addPattern("E0,0E,00,x0;0")
+        self.addPattern("E0,0E,00,x0;0-0,6-3,20-0")
         
         # 2 Bridge oben blocken
-        self.addPattern("00E,000,0E0,000,x00;0")
+        self.addPattern("00E,000,0E0,000,x00;0-0")
         
         # 2 Bridge oben rechts blocken
-        self.addPattern("000E,0E00,0000,x000;0")
+        self.addPattern("000E,0E00,0000,x000;0-0")
         
         # 2 Bridge nach unten blocken
-        self.addPattern("?0E0,0000,0x00;0")
+        self.addPattern("?0E0,0000,0x00;0-0")
         
         # eigene Steine zur Seite bringen // unten links
-        self.addPattern("?0P,x0?;1")
-        self.addPattern("?0x,P0?;1")
-        self.addPattern("P0,0x;1")
+        self.addPattern("?0P,x0?;0-1")
+        self.addPattern("?0x,P0?;0-1")
+        self.addPattern("P0,0x;0-1")
         
         #JannisBrückenbauenamanfang
-        self.addPattern("x00,0P0,00P;1")
-        self.addPattern("P00,0P0,00x;1")
-        self.addPattern("??00x,00P0?,P00??;1")
-        self.addPattern("??00P,?0P00,x00??;1")
+        self.addPattern("x00,0P0,00P;0-1")
+        self.addPattern("P00,0P0,00x;0-1")
+        self.addPattern("??00x,00P0?,P00??;0-1")
+        self.addPattern("??00P,?0P00,x00??;0-1")
               
         #JannisBrückenverhindern
-        self.addPattern("00x0,??00,?0E0,?00?,0E0?;2")
-        self.addPattern("0E,xP;3")
-        self.addPattern("xP,E0;3")
+        self.addPattern("00x0,??00,?0E0,?00?,0E0?;0-2")
+        self.addPattern("0E,xP;0-3")
+        self.addPattern("xP,E0;0-3")
         
         #JannisBrückenbauenspeziale
-        self.addPattern("P,x,P;2")
+        self.addPattern("P,x,P;0-2")
         
         # Brücken schließen
         #self.addPattern("0P,P0;x---;0;0;00000;0")
-        self.addPattern("0xP,P00;2.5")#<--- WERT GEÄNDERT
-        self.addPattern("P0,xP;2.5")#<--- WERT GEÄNDERT
+        self.addPattern("0xP,P00;0-2.5")#<--- WERT GEÄNDERT
+        self.addPattern("P0,xP;0-2.5")#<--- WERT GEÄNDERT
         #brücken schließen,wenn der gegner den anderen stein, der die brücke schließt gelegt hat.
-        self.addPattern("Px,EP;3")
-        self.addPattern("PE,xP;3")
-        self.addPattern("?P,Ex,P?;0")
-        self.addPattern("?P,xE,P?;0")
-        self.addPattern("?xP,PE?;3")
-        self.addPattern("?EP,Px?;3")
+        self.addPattern("Px,EP;0-3")
+        self.addPattern("PE,xP;0-3")
+        self.addPattern("?P,Ex,P?;0-0")
+        self.addPattern("?P,xE,P?;0-0")
+        self.addPattern("?xP,PE?;0-3")
+        self.addPattern("?EP,Px?;0-3")
         
         # 1- Brücke verhindern
-        self.addPattern("?E?,Px?,E??;0")
+        self.addPattern("?E?,Px?,E??;0-0")
         
         # Gegner blockieren, selber brücke bauen
-        self.addPattern("00P,E00,x00;0")
+        self.addPattern("00P,E00,x00;0-0")
         
         # 2 bridge connecten
-        self.addPattern("P0?,0x0,?0P;0")
+        self.addPattern("P0?,0x0,?0P;0-0")
         
         self.Vertices = dict(self.Model.Vertices)
         
@@ -83,15 +83,16 @@ class PatternMatcher:
         
         if len(patterns) > 0:
             
-            patternToSelect = max(patterns, key=lambda x:x[0])
+            patternToSelect = self.getBestPattern(patterns)
             #patternToSelect = random.choice(patterns)
             
-            i_shift = int(patternToSelect[1])
-            j_shift = int(patternToSelect[2])
-            i = int(patternToSelect[3])
-            j = int(patternToSelect[4])
+            i_shift = int(patternToSelect[1][0])
+            j_shift = int(patternToSelect[1][1])
+            i = int(patternToSelect[1][2])
+            j = int(patternToSelect[1][3])
             
-            #print("Pattern Used:", patternToSelect[5], "@", i_shift, j_shift, "with", i, j)
+            #if i_shift + i >= self.KI.Size.m or j_shift + j >= self.KI.Size.n:
+            #    print("Pattern Used:", patternToSelect[5], "@", i_shift, j_shift, "with", i, j)
             
             return [i_shift + i, j_shift + j]
         
@@ -107,7 +108,7 @@ class PatternMatcher:
         
         modes = text.split(";")
         
-        if self.KI.getPlayer() == 1:
+        if self.KI.currentPlayer() == 1:
             reverse = False
         else:
             reverse = True
@@ -131,11 +132,40 @@ class PatternMatcher:
         
         return gameState
     
+    # get Pattern by dynamic weight
+    def getBestPattern(self, patterns):
+        
+        Q = []
+        
+        # for each pattern
+        for pattern in patterns:
+            
+            # check the weight definitions
+            if len(pattern[0]) > 1:
+                
+                added = False
+                # if multiple weights defined
+                for weight in pattern[0]:
+                    
+                    # check which one is applicable according to counter
+                    if weight[0] >= self.KI._moveCounter:
+                        Q.append([weight[1], pattern[1:]])
+                
+                # if nothing is found, just add the first one
+                if not added:
+                    Q.append([pattern[0][0][1], pattern[1:]])
+                    
+            else:
+                Q.append([pattern[0][0][1], pattern[1:]])
+                
+        # get now the dynamic maximum
+        return max(Q, key=lambda x:x[0])
+    
     def checkPatterns(self):
         
         PatternsFound = []
         
-        player = self.KI.getPlayer()
+        player = self.KI.currentPlayer()
         
         if player == 2:
             enemy = 1
@@ -207,6 +237,7 @@ class PatternMatcher:
                         
                     if matching == True and not self.Model.isMarked(i_shift + pattern.i, j_shift + pattern.j):
                         
+                        #if i_shift + pattern.i < 
                         PatternsFound.append([pattern.weight, i_shift, j_shift, pattern.i, pattern.j, pattern.pattern])
         
         return PatternsFound

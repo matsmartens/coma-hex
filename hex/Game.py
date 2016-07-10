@@ -1,14 +1,23 @@
 from HexGUI import *
-from HexBoard import HexBoard
-import random
-from EventManager import EventManager
-from MachineGUI import MachineGUI
 from HexKI import *
-class Game:
+from HexBoard import HexBoard
+
+from PlayerController import *
+
+from EventManager import EventManager
+from Size import *
+from MachineGUI import *
+
+import random
+
+
+class Game(PlayerController):
     
     
     
     def __init__(self, m, n, mode):
+        
+        super().__init__()
         
         # init all events
         EventManager.initEvents()
@@ -20,15 +29,11 @@ class Game:
         self._pause = False
         
         # save size and mode
-        self.size = [m,n]
+        self.Size = Size(m,n)
         self.mode = mode
         
-        # just to init the value
-        self._currentPlayer = 1
-        self._currentPlayerType = "human"
-        
         # instantiate model and view
-        self.HexBoard = HexBoard(self.size[0], self.size[1])
+        self.HexBoard = HexBoard(self.Size.m, self.Size.n)
         self.HexBoard.setReferenceToGame(self)
         
         self.GameState = 0
@@ -36,18 +41,18 @@ class Game:
         self.moveCounter = 0
         
         if self.UIRequired():
-            self.HexGUI = HexGUI(self.size[0], self.size[1], self)
+            self.HexGUI = HexGUI(self.Size.m, self.Size.n, self)
         else:
-            self.MachineGUI = MachineGUI(self.size[0], self.size[1], self)
+            self.MachineGUI = MachineGUI(self.Size.m, self.Size.n, self)
         
         if self.mode == "ki":
-            self.KI = HexKI(self.size[0], self.size[1])
+            self.KI = HexKI(self.Size.m, self.Size.n)
         
         if self.mode == "inter" or self.mode == "machine":
             
             self.KI = []
-            self.KI.append(HexKI(self.size[0], self.size[1]))
-            self.KI.append(HexKI(self.size[0], self.size[1]))
+            self.KI.append(HexKI(self.Size.m, self.Size.n))
+            self.KI.append(HexKI(self.Size.m, self.Size.n))
             
             self._currentPlayerType = "ki"
         
@@ -108,7 +113,7 @@ class Game:
         self.moveCounter = 0
         
         # generate fresh state
-        self.HexBoard = HexBoard(self.size[0], self.size[1])
+        self.HexBoard = HexBoard(self.Size.m, self.Size.n)
         self.HexBoard.setReferenceToGame(self)
         
         # current player depending on decision
@@ -120,13 +125,13 @@ class Game:
         
         
         if self.mode == "ki":
-            self.KI = HexKI(self.size[0], self.size[1])
+            self.KI = HexKI(self.Size.m, self.Size.n)
         
         if self.mode == "inter" or self.mode == "machine":
             
             self.KI = []
-            self.KI.append(HexKI(self.size[0], self.size[1]))
-            self.KI.append(HexKI(self.size[0], self.size[1]))
+            self.KI.append(HexKI(self.Size.m, self.Size.n))
+            self.KI.append(HexKI(self.Size.m, self.Size.n))
             
             self._currentPlayerType = "ki"
         
@@ -153,60 +158,10 @@ class Game:
     
     def loadState(self):
         
-        state = [[0, 1, 0, 0, 1, 0, 0, 2, 2, 2, 2], [0, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0], [0, 1, 1, 1, 0, 0, 2, 2, 2, 2, 2], [1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2], [1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 0], [0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2], [0, 0, 1, 1, 1, 0, 2, 2, 2, 2, 2], [1, 0, 2, 1, 1, 0, 0, 0, 2, 1, 1], [0, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0], [2, 2, 2, 2, 0, 0, 0, 1, 1, 1, 0], [2, 0, 0, 2, 2, 2, 1, 0, 0, 1, 1]]
-        
+        state = [[0, 2, 0, 0, 0, 0, 0, 2, 2, 0, 2], [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0], [2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0], [0, 0, 0, 2, 2, 0, 1, 0, 0, 0, 0], [2, 0, 2, 1, 1, 1, 1, 1, 0, 0, 0], [0, 1, 1, 0, 2, 2, 1, 1, 1, 2, 0], [1, 1, 2, 2, 0, 0, 2, 0, 1, 0, 0], [1, 1, 2, 0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 2], [2, 2, 0, 0, 1, 2, 1, 1, 0, 1, 1]]
+
         self.HexBoard.readBoard(state)
-    
-    # get current state of the board
-    def getBoard(self):
-        
-        Vertices = []
-        
-        for i in range(self.size[0]):
-            VertexRow = []
-            for j in range(self.size[1]):
-                player = self.HexBoard.getVertex(i, j).player
-                if player == None:
-                    player = 0
-                VertexRow.append(player)
-            
-            Vertices.append(VertexRow)
-        
-        return Vertices
-            
-    
-    # generate random player number
-    def chooseFirst(self):
-        self._currentPlayer = round(random.random()) + 1
-    
-    # is the getter for the private variable
-    def currentPlayer(self):
-        return self._currentPlayer
-    
-    # is the current Player human?
-    def isPlayerHuman(self):
-        return self._currentPlayerType == "human"
-    
-    # alter the players
-    def changePlayer(self):
-        
-        if self._currentPlayer == 1:
-            self._currentPlayer = 2
-            
-        else:
-            self._currentPlayer = 1
-            
-        if self.mode == "ki":
-            
-            if self._currentPlayerType == "human":
-                self._currentPlayerType = "ki"
-            else:
-                self._currentPlayerType = "human"
-        
-        if self.mode in ["inter", "machine"]:
-            
-            self._currentPlayerType = "ki"
-                
+
     
     # control flow for click event
     def makeMove(self, move):
@@ -231,6 +186,9 @@ class Game:
             if self.mode == "inter":
                 self.KI[0].receiveMove(move)
                 self.KI[1].receiveMove(move)
+                '''if self.moveCounter > 3:
+                    print(self.KI[0].PatternMatcher.mapGameState())
+                    print(self.KI[1].PatternMatcher.mapGameState())'''
             elif self.mode == "ki":
                 self.KI.receiveMove(move)
             
@@ -240,6 +198,22 @@ class Game:
  
         EventManager.notify("MoveFinished")
     
+    # get current state of the board
+    def getBoard(self):
+        
+        Vertices = []
+        
+        for i in range(self.Size.m):
+            VertexRow = []
+            for j in range(self.Size.n):
+                player = self.HexBoard.getVertex(i, j).player
+                if player == None:
+                    player = 0
+                VertexRow.append(player)
+            
+            Vertices.append(VertexRow)
+        
+        return Vertices
     
     def doKIMove(self):
         

@@ -1,88 +1,57 @@
-from HexBoardKI import *
+from HexBoard import *
 from EventManager import *
+
+from PlayerController import *
+
 from PatternMatcher import PatternMatcher
+from Size import *
+
 from random import shuffle
 
-class Size:
-    def __init__(self, m = 0, n = 0):
-        self.m = m
-        self.n = n
-
-    def getWidth(self):
-        return self.n
-    
-    def getHeight(self):
-        return self.m
-
-
-
-class HexKI:
+class HexKI(PlayerController):
     
     def __init__(self, m, n):
         
+        super().__init__()
         
         self._moveCounter = 1
         
         self._movesReceived = 0
         self._movesCalculated = 0
         
-        self._myTurn = False
-        
         self.Size = Size(m,n)
         
-        self.HexBoard = HexBoardKI(self.Size.m, self.Size.n)
-        
+        self.HexBoard = HexBoard(self.Size.m, self.Size.n)
+        self.HexBoard.suppressEvents()
+        self.HexBoard.setReferenceToGame(self)
         
         self.PatternMatcher = None
         #self.MCTS = MCTS()
         
-        self._player = 0
-        
         # pattern, mcts, random
         self.modeCounter = [0,0,0]
-        
-    def getPlayer(self):
-        return self._player
-    
-    def getEnemy(self):
-        
-        if self._player == 1:
-            return 2
-        else:
-            return 1
-    
     
     def receiveMove(self, move):
         
         self._movesReceived += 1
         
         # notify Model
-        if self._myTurn:
-            self.HexBoard.receiveMoveByPlayer([move[0], move[1]], "player")
-        else:
-            self.HexBoard.receiveMoveByPlayer([move[0], move[1]], "enemy")
-        self._myTurn = False
+        self.HexBoard.receiveMove([move[0], move[1]])
         
-        self._moveCounter = self._moveCounter + 1
         
         # finnaly it's possible to determine where we should play
-        if self._moveCounter == 2:
+        if self._moveCounter == 1:
 
-            if self._movesCalculated != self._movesReceived:
-                self._player = 2
+            if self._movesCalculated == 0:
+                self.setPlayerIdentity(2)
             else:
-                self._player = 1
-            
-            
-            self.HexBoard.setPlayer(self._player)
+                self.setPlayerIdentity(1)
+        
+        if self._moveCounter == 2:
             self.PatternMatcher = PatternMatcher(self.HexBoard, self)
             
-        
-        if sum(self.modeCounter) > 0:
-            pass#print(round((self.modeCounter[0] * 100 / sum(self.modeCounter))),round((self.modeCounter[1] * 100 / sum(self.modeCounter))),round((self.modeCounter[2] * 100 / sum(self.modeCounter))))
-        
-            if self.modeCounter[0]/sum(self.modeCounter) < 0.8:
-                pass#self.Game.pause()  
+        self.changePlayer()
+        self._moveCounter = self._moveCounter + 1
         
     def nextMove(self):
         
@@ -137,7 +106,6 @@ class HexKI:
                 
                 
                 # finally pick random
-                #print("MODE:", "random")
                 self.modeCounter[2] += 1
                 vertices = self.HexBoard.getVertices("unmarked")
                 shuffle(vertices)
@@ -150,25 +118,9 @@ class HexKI:
     
     
     # read the current board
-    def readBoard(self):
-        pass
+    def readBoard(self, board, current = True):
+        self.HexBoard.readBoard(board, current)
 
-    # get current state of the board
-    def getBoard(self):
-        
-        Vertices = []
-        
-        for i in range(self.Size.m):
-            VertexRow = []
-            for j in range(self.Size.n):
-                player = self.HexBoard.getVertex(i, j).player
-                if player == None:
-                    player = 0
-                VertexRow.append(player)
-            
-            Vertices.append(VertexRow)
-        
-        return Vertices
 
 
 

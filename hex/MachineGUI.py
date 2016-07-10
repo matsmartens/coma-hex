@@ -5,6 +5,7 @@ from EventManager import EventManager
 from random import shuffle
 from HexKI import HexKI
 from HexBoard import HexBoard
+from RandomKI import RandomKI
 
 
 class MachineGUI:
@@ -17,7 +18,7 @@ class MachineGUI:
         
         self._finished = False
         
-        self.targetIterations = 5
+        self.targetIterations = 100
         self.q = 0 
         
         self.start()
@@ -28,7 +29,7 @@ class MachineGUI:
     def start(self):
         
         self.KI = []
-        self.KI.append(HexKI(self.size[0], self.size[1]))
+        self.KI.append(RandomKI(self.size[0], self.size[1]))
         self.KI.append(HexKI(self.size[0], self.size[1]))
         
         self.Game.HexBoard = HexBoard(self.size[0], self.size[1])
@@ -43,6 +44,7 @@ class MachineGUI:
         print("Entering Game Loop")
         player = 1
         Q = []
+        Winners = []
         while self.IterationCounter < self.targetIterations:
             
             q= 0
@@ -56,12 +58,14 @@ class MachineGUI:
                 
                 move = self.KI[player].nextMove()
                 
+                
                 self.KI[0].receiveMove(move)
                 self.KI[1].receiveMove(move)
                 self.Game.makeMove(move)
                 
                 #print(self.KI[player].PatternMatcher.mapGameState())
-            Q.append([q, self.KI[0].getBoard()])
+            Winners.append(self.Game.HexBoard.winner())
+            Q.append([self.Game.HexBoard.winner(), q, self.KI[0].getBoard()])
             
             self.IterationCounter = self.IterationCounter + 1
             
@@ -91,6 +95,10 @@ class MachineGUI:
         f.write("Most used vertices: \n")
         
         f.write(str(collections.Counter(self.WonVertices)) + "\n\n")
+        
+        f.write("Win statistics:\n\n")
+        
+        f.write("1 gewonnen: " + str(round(Winners.count(1)*100/len(Winners))) + "%, 2 gewonnen: " + str(round(Winners.count(2)*100/len(Winners))) + "%\n\n")
         
         f.write("moves per game // game state to be loaded @ Game->loadState()\n")
         

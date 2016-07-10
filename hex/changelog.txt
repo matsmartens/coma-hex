@@ -65,8 +65,22 @@ you can then use the loadState to have a look into the logic of the game. The fi
 # ------------------------------
 
 # added
-- victorypath(works really well, except for certain spezial situations...) to hexmodel
--Hexagon got a new attribute(victorypath = 0)
+- getVictoryPath(works really well, except for certain special situations...) @HexModel.py
+- Hexagon got a new attribute(victorypath = 0)
+
+# ------------------------------
+# v1.6
+# ------------------------------
+
+# added
+- New Weight definitions for patterns (;0-0,10-1,25-100) -> from 0 to 10 weight 0, from 10 to 25 weight 1, thereafter 100
+- Size class added to store Size prettier.. size[0], size[1] -> .Size.m, .Size.n
+- PlayerController.py holds all player information
+
+# updated
+- HexBoardKI and HexBoard now merged with Base class "HexModel" to just have a single class HexBoard (HexBoard.suppressEvents() is used to get the workaround for not calling the EventManager twice when in inter mode)
+- Game and HexKI inherits from PlayerController where the information about the player is stored
+- Menu view doesnt display choice of which player is starting when mode is "inter"
 
 
 

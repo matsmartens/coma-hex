@@ -44,8 +44,9 @@ class MenuView:
         self.logo.pack(side=LEFT)
         self.button.pack(side=LEFT)
         self.Player1.pack(side=LEFT)
-        self.Player2.pack(side=LEFT)
-        self.Player0.pack(side=LEFT)
+        if self.GUI.Game.mode != "inter":
+            self.Player2.pack(side=LEFT)
+            self.Player0.pack(side=LEFT)
         
         self.winnerLabel.pack(side=LEFT)
         
