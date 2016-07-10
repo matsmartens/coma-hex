@@ -74,9 +74,111 @@ class HexKI(PlayerController):
     def calculateMove(self):
         # asymmetric board
         if self.Size.m != self.Size.n:
+            if self._moveCounter == 1:
+                # calc first move
+                return [round(self.Size.m * 0.75), round(self.Size.n * 0.75)]
             
-            # set the result
-            return [0,0]
+            else:
+                Movege= self.HexBoard.getLastMove()
+                i=Movege[0]
+                j=Movege[1]
+                
+                if self.Size.m < self.Size.n:
+                    unters=self.Size.n-self.Size.m 
+                    maxi=self.Size.m -1 
+                    maxj=self.Size.n -unters
+                    if (i+j) < maxj:
+                        gesj=maxj-i
+                        gesi=maxi-j
+                    else:
+                        gesj=maxi-i
+                        gesi=maxj-j
+                        
+                    #restspalten    
+                    if unters/2!=1 and unters!=1 and j>maxj:
+                        if j/2==1:
+                            gesj= j+1
+                            gesi= i
+                        else:
+                            gesj=j-1
+                            gesi=i
+                    if unters!=1 and j>maxj:
+                        if j==self.Size.n-1 and i ==self.Size.m-1:
+                            vertices = self.HexBoard.getVertices("unmarked")
+                            shuffle(vertices)
+                            vertex = vertices.pop()
+                            move = [vertex.i, vertex.j]
+                            return move
+                            
+                        if j!= self.Size.n-1:
+                            if j%2==1 :
+                                gesj= j-1
+                                gesi= i
+                            else:
+                                gesj=j+1
+                                gesi=i
+                        else:
+                            if i%2==1:
+                                gesj=j
+                                gesi=i-1
+                            else:
+                                gesj=j
+                                gesi=i+1
+                
+                
+                #länger als breiter                
+                else:
+                    unters=self.Size.m-self.Size.n 
+                    maxj=self.Size.n -1 
+                    maxi=self.Size.m -unters
+                    if (i+j) < maxi:
+                        gesi=maxi-j
+                        gesj=maxj-i
+                    else:
+                        gesi=maxj-j
+                        gesj=maxi-i
+                    
+                    if unters!=1 and j>maxj:
+                        if j%2==1:
+                            gesj= j+1
+                            gesi= i
+                        else:
+                            gesj=j-1
+                            gesi=i
+                            
+                    if unters!=1 and i>maxi:
+                        if j==self.Size.n-1 and i ==self.Size.m-1:
+                            vertices = self.HexBoard.getVertices("unmarked")
+                            shuffle(vertices)
+                            vertex = vertices.pop()
+                            move = [vertex.i, vertex.j]
+                            return move
+                            
+                        if i!= self.Size.m-1:
+                            if i%2==1 :
+                                gesi= i-1
+                                gesj= j
+                            else:
+                                gesi=i+1
+                                gesj=j
+                        else:
+                            if j%2==1:
+                                gesi=i
+                                gesj=j-1
+                            else:
+                                gesi=i
+                                gesj=j+1
+                                
+                if self.HexBoard.isMarked(gesi,gesj)==True:
+                    vertices = self.HexBoard.getVertices("unmarked")
+                    shuffle(vertices)
+                    vertex = vertices.pop()
+                    move = [vertex.i, vertex.j]
+                    return move
+                    
+                gesmove=[gesi,gesj]
+                    
+                return gesmove
         
         else:
             
