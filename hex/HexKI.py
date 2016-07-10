@@ -63,8 +63,13 @@ class HexKI(PlayerController):
         return self.calculateMove()
     
     #chooseOrder(self, firstmove) soll basierend auf dem ersten Zug entscheiden, ob als zweiter Spieler weitergespielt wird oder stattdessen der Computergegner als erster Spieler spielt. Der Ru ̈ckgabewert soll 1 oder 2 sein; bei 1 soll der Computergegner als erster Spieler weiterspielen, bei 2 soll er zweiter Spieler bleiben.
-    def chooseOrder(self, firstmove):
-        pass
+    #def chooseOrder(self, firstmove):
+    #   Schranke = ((self.Board.size[0] // 2) // 2)
+     #   i = firstmove[1]
+      #  j = firstmove[0]
+       # if (i > Schranke and (j > Schranke or j < (self.Board.size[1] -1) - Schranke)) or ((i < ((self.Board.size[0] -1) - Schranke))and (j > Schranke or j < (self.Board.size[1] -1) - Schranke)):
+        #DO SWAP PLAYER 
+
     #calculateMove(self) soll den na ̈chsten Zug berechnen und True zuru ̈ckgeben, wenn die Berechnung fertiggestellt ist. Beim Testen werden wir Ihre Prozesse nach einer gewissen Zeit abbrechen. Es sollte also immer eine Mo ̈glichkeit fu ̈r einen na ̈chsten Zug (in einer Instanzvariable) gespeichert sein.
     def calculateMove(self):
         # asymmetric board

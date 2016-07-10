@@ -131,46 +131,52 @@ class HexBoard:
             if j == self.size[1]-1:
                 return
             else:
-                if self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None and self.getVertex(i,j+1).victorypath != -1:
+                if self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None and self.getVertex(i,j+1).victorypath != -1 and self.getVertex(i,j+1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i,j+1).victorypath = self.Game.currentPlayer()
                     self.victory(i,j+1)
-                elif self.getVertex(i-1,j+1).player == self.Game.currentPlayer() or self.getVertex(i-1,j+1).player == None and self.getVertex(i-1,j+1).victorypath != -1:
+                elif self.getVertex(i-1,j+1).player == self.Game.currentPlayer() or self.getVertex(i-1,j+1).player == None and self.getVertex(i-1,j+1).victorypath != -1 and self.getVertex(i-1,j+1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i-1,j+1).victorypath = self.Game.currentPlayer()
                     self.victory(i-1,j+1)
-                elif (self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i+1,j).victorypath != -1:
+                elif (self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i+1,j).victorypath != -1 and self.getVertex(i+1,j).victorypath != self.Game.currentPlayer():
                     self.getVertex(i+1,j).victorypath = self.Game.currentPlayer()
                     self.victory(i+1,j)
-                elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i-1,j).victorypath != -1:
+                elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i-1,j).victorypath != -1 and self.getVertex(i-1,j).victorypath != self.Game.currentPlayer():
                     self.getVertex(i-1,j).victorypath = self.Game.currentPlayer()
                     self.victory(i-1,j)
-                elif (self.getVertex(i-1,j-1).player == self.Game.currentPlayer() or self.getVertex(i-1,j-1).player == None) and self.getVertex(i-1,j-1).victorypath != -1:
+                elif (self.getVertex(i-1,j-1).player == self.Game.currentPlayer() or self.getVertex(i-1,j-1).player == None) and self.getVertex(i-1,j-1).victorypath != -1 and self.getVertex(i-1,j-1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i-1,j-1).victorypath = self.Game.currentPlayer()
                     self.victory(i-1,j-1)
                 elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1:
-                    self.getVertex(i,j-1).victorypath = -1
-                    self.victory(i,j-1)
-                else:
                     self.getVertex(i,j).victorypath = -1
-                    self.victory(i,j)
+                    self.victory(i,j-1)
+                #else:
+                #    self.getVertex(i,j).victorypath = -1
+                #    self.victory(i,j)
         else:
             if i == self.size[0]-1:
                 return
             else:
-                if self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None and self.getVertex(i+1,j).victorypath != -1:
+                if self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None and self.getVertex(i+1,j).victorypath != -1 and self.getVertex(i+1,j).victorypath != self.Game.currentPlayer():
                     self.getVertex(i+1,j).victorypath = self.Game.currentPlayer()
                     self.victory(i+1,j)
-                elif self.getVertex(i+1,j-1).player == self.Game.currentPlayer() or self.getVertex(i+1,j-1).player == None and self.getVertex(i+1,j-1).victorypath != -1:
+                elif self.getVertex(i+1,j-1).player == self.Game.currentPlayer() or self.getVertex(i+1,j-1).player == None and self.getVertex(i+1,j-1).victorypath != -1 and self.getVertex(i+1,j-1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i+1,j-1).victorypath = self.Game.currentPlayer()
                     self.victory(i+1,j-1)
-                elif (self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None) and self.getVertex(i,j+1).victorypath != -1:
+                elif (self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None) and self.getVertex(i,j+1).victorypath != -1 and self.getVertex(i,j+1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i,j+1).victorypath = self.Game.currentPlayer()
                     self.victory(i,j+1)
-                elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1:
+                elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1 and self.getVertex(i,j-1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i,j-1).victorypath = self.Game.currentPlayer()
                     self.victory(i,j-1)
-                else:
-                    self.getVertex(i,j).victorypath = -1  
-                    self.victory(i,j)	          
+                elif (self.getVertex(i-1,j+1).player == self.Game.currentPlayer() or self.getVertex(i-1,j+1).player == None) and self.getVertex(i-1,j+1).victorypath != -1 and self.getVertex(i-1,j+1).victorypath != self.Game.currentPlayer():
+                    self.getVertex(i-1,j+1).victorypath = self.Game.currentPlayer()
+                    self.victory(i-1,j+1)
+                elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i-1,j).player == None) and self.getVertex(i-1,j).victorypath != -1:
+                    self.getVertex(i,j).victorypath = -1
+                    self.victory(i-1,j)
+                #else:
+                 #   self.getVertex(i,j).victorypath = -1  
+                  #  self.victory(i,j)	          
    
     
     # in case of a won game return last player
