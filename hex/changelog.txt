@@ -82,6 +82,14 @@ you can then use the loadState to have a look into the logic of the game. The fi
 - Game and HexKI inherits from PlayerController where the information about the player is stored
 - Menu view doesnt display choice of which player is starting when mode is "inter"
 
+# ------------------------------
+# v1.6.1
+# ------------------------------
+
+# updated
+- minor change @PatternGenerator, new iterative weights added
+
+
 
 
 
