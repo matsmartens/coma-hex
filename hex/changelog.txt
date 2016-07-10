@@ -89,6 +89,13 @@ you can then use the loadState to have a look into the logic of the game. The fi
 # updated
 - minor change @PatternGenerator, new iterative weights added
 
+# ------------------------------
+# v1.6.2
+# ------------------------------
+
+# updated
+- minor changes e.g. correct pattern rotations
+
 
 
 

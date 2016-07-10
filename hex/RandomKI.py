@@ -3,6 +3,7 @@ from HexBoard import *
 from Size import *
 from random import shuffle
 from PlayerController import PlayerController
+from PatternMatcher import *
 
 class RandomKI(PlayerController):
     
@@ -37,6 +38,12 @@ class RandomKI(PlayerController):
         self.HexBoard.receiveMove([move[0], move[1]])
         
         self._moveCounter = self._moveCounter + 1
+        
+        if self._moveCounter == 2:
+            self.PatternMatcher = PatternMatcher(self.HexBoard, self)
+        
+        
+        self.changePlayer()
         
         
     def nextMove(self):

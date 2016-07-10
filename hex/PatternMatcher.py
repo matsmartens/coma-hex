@@ -40,7 +40,9 @@ class PatternMatcher:
         self.addPattern("P00,0P0,00x;0-1")
         self.addPattern("??00x,00P0?,P00??;0-1")
         self.addPattern("??00P,?0P00,x00??;0-1")
-              
+            
+        self.addPattern("-x;0-9999")
+        
         #JannisBrückenverhindern
         self.addPattern("00x0,??00,?0E0,?00?,0E0?;0-2")
         self.addPattern("0E,xP;0-3")
@@ -92,7 +94,7 @@ class PatternMatcher:
             j = int(patternToSelect[1][3])
             
             #if i_shift + i >= self.KI.Size.m or j_shift + j >= self.KI.Size.n:
-            #    print("Pattern Used:", patternToSelect[5], "@", i_shift, j_shift, "with", i, j)
+            #print("Pattern Used:", patternToSelect[1][4], "@", i_shift, j_shift, "with", i, j)
             
             return [i_shift + i, j_shift + j]
         
@@ -108,7 +110,7 @@ class PatternMatcher:
         
         modes = text.split(";")
         
-        if self.KI.currentPlayer() == 1:
+        if self.KI.getPlayerIdentity() == 1:
             reverse = False
         else:
             reverse = True
