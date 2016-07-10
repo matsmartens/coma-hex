@@ -19,42 +19,51 @@ class PatternMatcher:
         self.Patterns = {}
         
         # 2 Bridge oben links
-        self.addPattern("E0,0E,00,x0;0-0,6-3,20-0")
+        #self.addPattern("E0,0E,00,x0;0-0,6-3,20-0")
         
         # 2 Bridge oben blocken
-        self.addPattern("00E,000,0E0,000,x00;0-0")
+        #self.addPattern("00E,000,0E0,000,x00;0-0")
         
         # 2 Bridge oben rechts blocken
-        self.addPattern("000E,0E00,0000,x000;0-0")
+        #self.addPattern("000E,0E00,0000,x000;0-0")
         
         # 2 Bridge nach unten blocken
-        self.addPattern("?0E0,0000,0x00;0-0")
+        #self.addPattern("?0E0,0000,0x00;0-0")
         
         # eigene Steine zur Seite bringen // unten links
-        self.addPattern("?0P,x0?;0-1")
-        self.addPattern("?0x,P0?;0-1")
-        self.addPattern("P0,0x;0-1")
-        
+        #self.addPattern("?0P,x0?;0-1")
+        #self.addPattern("?0x,P0?;0-1")
+        #self.addPattern("P0,0x;0-1")
+
         #JannisBrückenbauenamanfang
-        self.addPattern("x00,0P0,00P;0-1")
-        self.addPattern("P00,0P0,00x;0-1")
-        self.addPattern("??00x,00P0?,P00??;0-1")
-        self.addPattern("??00P,?0P00,x00??;0-1")
-            
-        self.addPattern("-x;0-9999")
-        
+        #self.addPattern("x00,0P0,00P;0-1")
+        #self.addPattern("P00,0P0,00x;0-1")
+        self.addPattern("?0P0,x00P;2,0-5")
+        self.addPattern("P00x,0P0?;2,0-5")
+        #self.addPattern("0000x,00P0?,P0000;0-1")
+        #self.addPattern("0000P,?0P00,x0000;0-1")
+        #JannisRandverbinden
+        self.addPattern("-xP;0-3")
+        self.addPattern("Px-;0-3")
+        self.addPattern("-EP,-x?;0-3")
+        self.addPattern("?x-,PE-;0-3")
+        self.addPattern("-x0,-0P;0-3")
+        self.addPattern("P0-,0x-;0-3")
+        self.addPattern("P00-,0x0-;0-3")
+        self.addPattern("00x-,P00-;0-3")
         #JannisBrückenverhindern
         self.addPattern("00x0,??00,?0E0,?00?,0E0?;0-2")
         self.addPattern("0E,xP;0-3")
         self.addPattern("xP,E0;0-3")
         
         #JannisBrückenbauenspeziale
-        self.addPattern("P,x,P;0-2")
+        self.addPattern("?P?,0x0,?P?;0-2")
+        self.addPattern("?0?,PxP,?0?;0-2")
         
         # Brücken schließen
         #self.addPattern("0P,P0;x---;0;0;00000;0")
-        self.addPattern("0xP,P00;0-2.5")#<--- WERT GEÄNDERT
-        self.addPattern("P0,xP;0-2.5")#<--- WERT GEÄNDERT
+        self.addPattern("0xP,P00;0-2")#<--- WERT GEÄNDERT
+        self.addPattern("P0,xP;0-2")#<--- WERT GEÄNDERT
         #brücken schließen,wenn der gegner den anderen stein, der die brücke schließt gelegt hat.
         self.addPattern("Px,EP;0-3")
         self.addPattern("PE,xP;0-3")
@@ -62,7 +71,9 @@ class PatternMatcher:
         self.addPattern("?P,xE,P?;0-0")
         self.addPattern("?xP,PE?;0-3")
         self.addPattern("?EP,Px?;0-3")
-        
+        self.addPattern("P00-,0xP-;0-4")		
+        self.addPattern("0xP-,PE0-;0-4")
+        self.addPattern("0EP-,Px0-;0-4")
         # 1- Brücke verhindern
         self.addPattern("?E?,Px?,E??;0-0")
         
@@ -94,7 +105,7 @@ class PatternMatcher:
             j = int(patternToSelect[1][3])
             
             #if i_shift + i >= self.KI.Size.m or j_shift + j >= self.KI.Size.n:
-            #print("Pattern Used:", patternToSelect[1][4], "@", i_shift, j_shift, "with", i, j)
+            print("Pattern Used:", patternToSelect[1][4], "@", i_shift, j_shift, "with", i, j)
             
             return [i_shift + i, j_shift + j]
         
@@ -208,7 +219,7 @@ class PatternMatcher:
                                 
                                 # border detection
                                 if patternVal == "-":
-                                    if (i_shift + i > self.KI.Size.m or i_shift + i < 0 or j_shift + j > self.KI.Size.n or j_shift + j < 0):
+                                    if (i_shift + i > (self.KI.Size.m) or i_shift + i < 0 or j_shift + j > (self.KI.Size.n) or j_shift + j < 0):
                                         pass
                                     else:
                                         matching = False
