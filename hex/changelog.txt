@@ -97,6 +97,15 @@ you can then use the loadState to have a look into the logic of the game. The fi
 - minor changes e.g. correct pattern rotations
 
 
+# ------------------------------
+# v3.0 Final presentation result
+# ------------------------------
+
+# added
+- chooseOrder @HexKI
+
+# updated
+- minor bugs and problems
 
 
 

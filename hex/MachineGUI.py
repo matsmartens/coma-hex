@@ -18,7 +18,7 @@ class MachineGUI:
         
         self._finished = False
         
-        self.targetIterations = 20
+        self.targetIterations = 100
         self.q = 0 
         
         self.start()
@@ -75,8 +75,8 @@ class MachineGUI:
             self.IterationCounter = self.IterationCounter + 1
             
             # get snapshot if useful
-            if self.Game.HexBoard.winner() == 1 and q < 100:
-                print("Attractive Pattern found")
+            if self.Game.HexBoard.winner() == 1 and q < 50:
+                #print("Attractive Pattern found")
                 ptns = self.Game.HexBoard.getWinnerSnapshotBinary()
                 Patterns.extend(ptns)
             
@@ -87,9 +87,12 @@ class MachineGUI:
                 if value.player == self.Game.HexBoard.winner():
                     self.WonVertices.append(str(value.i) + ";" + str(value.j))
             
-            if self.IterationCounter // (self.targetIterations / 20) != self.q:
-                self.q = self.IterationCounter // (self.targetIterations / 20)
+            if self.IterationCounter // (self.targetIterations / 40) != self.q:
+                self.q = self.IterationCounter // (self.targetIterations / 40)
                 print(round(self.IterationCounter/self.targetIterations * 100,1), "%", self.IterationCounter)
+                f = open('progress.txt', 'w+')
+        
+                f.write(str(round(self.IterationCounter/self.targetIterations * 100,1)) + "%")
             
             self.Game.HexBoard = HexBoard(self.size[0], self.size[1])
             self.Game.HexBoard.setReferenceToGame(self.Game)
