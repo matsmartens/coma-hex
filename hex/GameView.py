@@ -27,8 +27,6 @@ class GameView:
         
         self.LoadStateButton = Button(master, text="Load State", command=self.loadState)
         
-        self.PrintStateButton = Button(master, text="Print State", command=self.printState)
-        
         self.PlayerSwapButton = Button(master,
                              text="Swap Player",
                              command=self.swapPlayer)
@@ -44,9 +42,6 @@ class GameView:
         
         # Initial Drawing
         self.draw()
-    
-    def printState(self):
-        print(self.Game.getBoard())
     
     def loadState(self):
         self.Game.loadState()
@@ -81,7 +76,6 @@ class GameView:
         self.ReturnToMenuButton.pack(side=LEFT)
         self.PauseButton.pack(side=LEFT)
         self.LoadStateButton.pack(side=LEFT)
-        self.PrintStateButton.pack(side=LEFT)
         
     def hide(self):
         self.canvas.pack_forget()
@@ -91,7 +85,6 @@ class GameView:
         self.ShowVictoryPathButton.pack_forget()
         self.PauseButton.pack_forget()
         self.LoadStateButton.pack_forget()
-        self.PrintStateButton.pack_forget()
     
     def onMouseOver(self, event):
         self.Pattern.onMouseOver(event)

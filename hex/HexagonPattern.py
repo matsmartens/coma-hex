@@ -58,7 +58,7 @@ class HexagonPattern():
         self.margin = 40
         
         self.vergleich=self.Size.n/self.Size.m
-        if self.vergleich>=2:
+        if self.vergleich>=1:
             self.q=self.Size.n + (self.Size.n - 1)/2
             self.scale=(self.HexGUI.canvas_width - 2 * self.margin*self.vergleich) / (self.q*1.7320508)
         else:

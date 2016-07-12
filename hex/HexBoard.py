@@ -1,6 +1,5 @@
 from EventManager import EventManager
 from Hexagon import *
-from math import floor
 
 class HexBoard:
     
@@ -83,7 +82,8 @@ class HexBoard:
     def finished(self):
         return self._finished
     
-    # get List of Vertices that belong to victory path
+    # get List of Vertices that belong to
+    # victory path
     def getVictoryPath(self):
         if self.Game.currentPlayer() == 1:
             z1 = self.size[0]//2
@@ -123,52 +123,61 @@ class HexBoard:
             if vertex.victorypath != 0:
                 vertex.victorypath = 0
         return ausgabeliste
-            
-            
+			
+			
     #hilfsfunktion für getvictorypath
     def victory(self, i, j):
         if self.Game.currentPlayer() == 1:
             if j == self.size[1]-1:
                 return
             else:
-                if self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None and self.getVertex(i,j+1).victorypath != -1:
+                if self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None and self.getVertex(i,j+1).victorypath != -1 and self.getVertex(i,j+1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i,j+1).victorypath = self.Game.currentPlayer()
                     self.victory(i,j+1)
-                elif self.getVertex(i-1,j+1).player == self.Game.currentPlayer() or self.getVertex(i-1,j+1).player == None and self.getVertex(i-1,j+1).victorypath != -1:
+                elif self.getVertex(i-1,j+1).player == self.Game.currentPlayer() or self.getVertex(i-1,j+1).player == None and self.getVertex(i-1,j+1).victorypath != -1 and self.getVertex(i-1,j+1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i-1,j+1).victorypath = self.Game.currentPlayer()
                     self.victory(i-1,j+1)
-                elif (self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i+1,j).victorypath != -1:
+                elif (self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i+1,j).victorypath != -1 and self.getVertex(i+1,j).victorypath != self.Game.currentPlayer():
                     self.getVertex(i+1,j).victorypath = self.Game.currentPlayer()
                     self.victory(i+1,j)
-                elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i-1,j).victorypath != -1:
+                elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None) and self.getVertex(i-1,j).victorypath != -1 and self.getVertex(i-1,j).victorypath != self.Game.currentPlayer():
                     self.getVertex(i-1,j).victorypath = self.Game.currentPlayer()
                     self.victory(i-1,j)
-                else:
+                elif (self.getVertex(i-1,j-1).player == self.Game.currentPlayer() or self.getVertex(i-1,j-1).player == None) and self.getVertex(i-1,j-1).victorypath != -1 and self.getVertex(i-1,j-1).victorypath != self.Game.currentPlayer():
+                    self.getVertex(i-1,j-1).victorypath = self.Game.currentPlayer()
+                    self.victory(i-1,j-1)
+                elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1:
                     self.getVertex(i,j).victorypath = -1
-                    self.victory(i,j)
+                    self.victory(i,j-1)
+                #else:
+                #    self.getVertex(i,j).victorypath = -1
+                #    self.victory(i,j)
         else:
             if i == self.size[0]-1:
                 return
             else:
-                if self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None and self.getVertex(i+1,j).victorypath != -1:
+                if self.getVertex(i+1,j).player == self.Game.currentPlayer() or self.getVertex(i+1,j).player == None and self.getVertex(i+1,j).victorypath != -1 and self.getVertex(i+1,j).victorypath != self.Game.currentPlayer():
                     self.getVertex(i+1,j).victorypath = self.Game.currentPlayer()
                     self.victory(i+1,j)
-                elif self.getVertex(i+1,j-1).player == self.Game.currentPlayer() or self.getVertex(i+1,j-1).player == None and self.getVertex(i+1,j-1).victorypath != -1:
+                elif self.getVertex(i+1,j-1).player == self.Game.currentPlayer() or self.getVertex(i+1,j-1).player == None and self.getVertex(i+1,j-1).victorypath != -1 and self.getVertex(i+1,j-1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i+1,j-1).victorypath = self.Game.currentPlayer()
                     self.victory(i+1,j-1)
-                elif (self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None) and self.getVertex(i,j+1).victorypath != -1:
+                elif (self.getVertex(i,j+1).player == self.Game.currentPlayer() or self.getVertex(i,j+1).player == None) and self.getVertex(i,j+1).victorypath != -1 and self.getVertex(i,j+1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i,j+1).victorypath = self.Game.currentPlayer()
                     self.victory(i,j+1)
-                elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1:
+                elif (self.getVertex(i,j-1).player == self.Game.currentPlayer() or self.getVertex(i,j-1).player == None) and self.getVertex(i,j-1).victorypath != -1 and self.getVertex(i,j-1).victorypath != self.Game.currentPlayer():
                     self.getVertex(i,j-1).victorypath = self.Game.currentPlayer()
                     self.victory(i,j-1)
-                else:
-                    self.getVertex(i,j).victorypath = -1  
-                    self.victory(i,j)            
-    # vertex is clicked        
-        # FIXME return victory path
-        return self.getVertices("unmarked")
-    
+                elif (self.getVertex(i-1,j+1).player == self.Game.currentPlayer() or self.getVertex(i-1,j+1).player == None) and self.getVertex(i-1,j+1).victorypath != -1 and self.getVertex(i-1,j+1).victorypath != self.Game.currentPlayer():
+                    self.getVertex(i-1,j+1).victorypath = self.Game.currentPlayer()
+                    self.victory(i-1,j+1)
+                elif (self.getVertex(i-1,j).player == self.Game.currentPlayer() or self.getVertex(i-1,j).player == None) and self.getVertex(i-1,j).victorypath != -1:
+                    self.getVertex(i,j).victorypath = -1
+                    self.victory(i-1,j)
+                #else:
+                 #   self.getVertex(i,j).victorypath = -1  
+                  #  self.victory(i,j)	          
+   
     
     # in case of a won game return last player
     def winner(self):
@@ -275,9 +284,12 @@ class HexBoard:
             # WIN Condition
             # either within the gameboard
             # or the last vertex marked has been at the borders
-            finished = False
+            antwort=[]
             if (-1 in groups and 0 in groups):
-                finished = True
+                for i , vertex in self.Vertices.items():
+                    if vertex.group==-1:
+                        print(vertex)
+                self.onGameFinished()
                 
             # get the minimum group
             minGroup = min(groups)
@@ -287,73 +299,6 @@ class HexBoard:
                 if value.group in groups:
                     value.group = minGroup
             
-            if finished:
-                self.onGameFinished()
-    
-    # return a height x width snapshot centered at i, j
-    def getWinnerSnapshotBinary(self, height = 5, width = 5):
-        
-        player = self.winner()
-        
-        
-        
-        WinningPatterns = []
-        
-        # look for winning vertices
-        for key, vertex in self.Vertices.items():
-            if vertex.group == -1 and vertex.i - 3 > 0 and vertex.i + 3 < 11 and vertex.j - 3 > 0 and vertex.j + 3 < 11:
-                
-                VerticesA = []
-                VerticesB = []
-                
-                for i in range(-floor(height/2), floor(height/2)):
-                    
-                    VertexRowA = []
-                    VertexRowB = []
-                    for j in range(-floor(width/2), floor(width/2)):
-                        
-                        if self.isValidCoordinate(i+vertex.i, j+vertex.j):
-                            
-                            v = self.getVertex(i+vertex.i, j+vertex.j)
-                            if v.player == player:
-                                VertexRowA.append(1)
-                                VertexRowB.append(0)
-                            elif v.player != None and v.player != player:
-                                VertexRowA.append(0)
-                                VertexRowB.append(1)
-                            else:
-                                VertexRowA.append(0)
-                                VertexRowB.append(1)
-                    
-                    VerticesA.extend(VertexRowA)
-                    VerticesB.extend(VertexRowB)
-                
-                VerticesA.extend(VerticesB)
-                
-                mask = 0b0
-                
-                for element in VerticesA:
-                    if element == 1:
-                        mask = (mask << 1) + 0b1
-                    else:
-                        mask = (mask << 1) + 0b0
-                
-                WinningPatterns.append(mask)
-        
-        return WinningPatterns
-                                
-                        
-                
-        
-                
-                
-    def isValidCoordinate(self, i, j):
-        
-        if i < self.size[0] and i > 0 and j < self.size[1] and j > 0:
-            return True
-        else:
-            return False
-          
     
     # read board
     def readBoard(self, board, current = True):
@@ -450,7 +395,58 @@ class HexBoard:
     # return last move
     def getLastMove(self):
         return self.lastMove
-    
+
+    # return a height x width snapshot centered at i, j
+    def getWinnerSnapshotBinary(self, height = 5, width = 5):
+        
+        player = self.winner()
+        
+        
+        
+        WinningPatterns = []
+        
+        # look for winning vertices
+        for key, vertex in self.Vertices.items():
+            if vertex.group == -1 and vertex.i - 3 > 0 and vertex.i + 3 < 11 and vertex.j - 3 > 0 and vertex.j + 3 < 11:
+                
+                VerticesA = []
+                VerticesB = []
+                
+                for i in range(-floor(height/2), floor(height/2)):
+                    
+                    VertexRowA = []
+                    VertexRowB = []
+                    for j in range(-floor(width/2), floor(width/2)):
+                        
+                        if self.isValidCoordinate(i+vertex.i, j+vertex.j):
+                            
+                            v = self.getVertex(i+vertex.i, j+vertex.j)
+                            if v.player == player:
+                                VertexRowA.append(1)
+                                VertexRowB.append(0)
+                            elif v.player != None and v.player != player:
+                                VertexRowA.append(0)
+                                VertexRowB.append(1)
+                            else:
+                                VertexRowA.append(0)
+                                VertexRowB.append(1)
+                    
+                    VerticesA.extend(VertexRowA)
+                    VerticesB.extend(VertexRowB)
+                
+                VerticesA.extend(VerticesB)
+                
+                mask = 0b0
+                
+                for element in VerticesA:
+                    if element == 1:
+                        mask = (mask << 1) + 0b1
+                    else:
+                        mask = (mask << 1) + 0b0
+                
+                WinningPatterns.append(mask)
+        
+        return WinningPatterns
     # game finished event
     def onGameFinished(self):
         if not self._eventsSuppressed:

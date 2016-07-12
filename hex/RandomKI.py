@@ -60,7 +60,7 @@ class RandomKI(PlayerController):
         
         shuffle(vertices)
         vertex = vertices.pop()
-        
+        print("Random")
         return [vertex.i, vertex.j]
     
     

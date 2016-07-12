@@ -158,15 +158,9 @@ class Game(PlayerController):
     
     def loadState(self):
         
-        state = [[0, 2, 1, 2, 0, 1, 0, 0, 0, 0, 0], [0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0], [2, 0, 0, 0, 0, 1, 2, 1, 0, 0, 2], [0, 0, 0, 2, 0, 1, 1, 0, 0, 0, 0], [0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0], [0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0], [1, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0], [1, 2, 0, 0, 0, 0, 0, 1, 1, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]]
+        state = [[0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0], [0, 0, 1, 0, 2, 0, 0, 0, 1, 1, 0], [0, 0, 0, 2, 0, 1, 0, 0, 0, 1, 0], [0, 1, 0, 2, 0, 0, 0, 1, 0, 0, 0], [0, 0, 1, 2, 2, 1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 2, 2, 0, 0, 1, 0, 0], [0, 0, 1, 0, 0, 2, 2, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0], [1, 0, 0, 0, 1, 1, 0, 2, 2, 2, 0], [0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 2], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]]
 
         self.HexBoard.readBoard(state)
-        
-        if self.mode == "inter":
-            for KI in self.KI:
-                KI.HexBoard.readBoard(state)
-        elif self.mode == "ki":
-            self.KI.HexBoard.readBoard(state)
 
     
     # control flow for click event
@@ -192,17 +186,11 @@ class Game(PlayerController):
             if self.mode == "inter":
                 self.KI[0].receiveMove(move)
                 self.KI[1].receiveMove(move)
-                
-                
-                
+                '''if self.moveCounter > 3:
+                    print(self.KI[0].PatternMatcher.mapGameState())
+                    print(self.KI[1].PatternMatcher.mapGameState())'''
             elif self.mode == "ki":
                 self.KI.receiveMove(move)
-                
-                if self.moveCounter == 1:
-                    if self.KI.chooseOrder(move) == 1:
-                        self.HexBoard.switchColors()
-                        self.KI.HexBoard.switchColors()
-                        self.changePlayer()
             
             # notify View
             self.changePlayer()

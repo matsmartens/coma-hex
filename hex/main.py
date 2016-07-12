@@ -1,3 +1,3 @@
 from Game import *
 
-Game = Game(11,11,"ki")
+Game = Game(9,5,"ki")
